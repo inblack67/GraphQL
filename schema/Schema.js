@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull } = graphql;
 const Book = require('../models/Book');
 const Author = require('../models/Author');
 
@@ -78,28 +78,28 @@ const Mutation = new GraphQLObjectType({
             type: AuthorType,
             args:
             {
-                name: { type: GraphQLString },
-                age: { type: GraphQLInt }
+                name: { type: new GraphQLNonNull(GraphQLString) },
+                age: { type: new GraphQLNonNull(GraphQLInt) }
             },
             resolve: async (parent, args) => {
                 const { name, age } = args;
                 const newAuthor = await Author.create({ name, age });
                 return newAuthor;
-            } 
+            }
         },
         addBook: {
             type: BookType,
             args:
             {
-                title: { type: GraphQLString },
-                genre: { type: GraphQLString },
-                authorId: { type: GraphQLID }
+                title: { type: new GraphQLNonNull(GraphQLString) },
+                genre: { type: new GraphQLNonNull(GraphQLString) },
+                authorId: { type: new GraphQLNonNull(GraphQLID) }
             },
             resolve: async (parent, args) => {
                 const { title, genre, authorId } = args;
                 const newBook = await Book.create({ title, genre, authorId });
                 return newBook;
-            } 
+            }
         },
     }
 })
