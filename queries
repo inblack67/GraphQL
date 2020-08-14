@@ -16,3 +16,10 @@
 #     }
 #   }
 # }
+
+mutation{
+  addAuthor(name: "JK", age: 50){
+    name,
+    age
+  }
+}

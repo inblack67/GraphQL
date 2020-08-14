@@ -91,6 +91,20 @@ const Mutation = new GraphQLObjectType({
                 return newAuthor;
             } 
         },
+        addBook: {
+            type: BookType,
+            args:
+            {
+                title: { type: GraphQLString },
+                genre: { type: GraphQLString },
+                authorId: { type: GraphQLID }
+            },
+            resolve: async (parent, args) => {
+                const { title, genre, authorId } = args;
+                const newBook = await Book.create({ title, genre, authorId });
+                return newBook;
+            } 
+        },
     }
 })
 
