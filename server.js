@@ -2,6 +2,12 @@ const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const Schema = require('./schema/Schema');
 
+// env and mongo
+const dotenv = require('dotenv');
+dotenv.config({ path: 'config.env' });
+const connectDB = require('./connectDB');
+connectDB();
+
 require('colors');
 
 const app = express();
