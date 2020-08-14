@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import BitcoinState from './context/bitcoin/BitcoinState'
+import BookState from './context/book/BookState'
 import Home from './components/Home';
 
 
 import './App.css';
-import { useEffect } from 'react';
 
 function App() {
 
@@ -15,7 +14,7 @@ function App() {
   }, [])
 
   return (
-    <BitcoinState>
+    <BookState>
       <div className="">
         <Router>
           <Switch>
@@ -23,7 +22,7 @@ function App() {
           </Switch>
         </Router>
       </div>
-    </BitcoinState>
+    </BookState>
   );
 }
 
