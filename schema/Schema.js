@@ -3,20 +3,6 @@ const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, 
 const Book = require('../models/Book');
 const Author = require('../models/Author');
 
-const books = [
-    { id: '1', title: 'lorem', genre: 'oka', authorId: '4' },
-    { id: '2', title: 'ipsum', genre: 'not', authorId: '5' },
-    { id: '3', title: 'harry', genre: 'react', authorId: '6' },
-    { id: '4', title: 'harry', genre: 'react', authorId: '4' },
-    { id: '5', title: 'harry', genre: 'react', authorId: '4' },
-]
-
-const authors = [
-    { id: '4', name: 'lorem', age: 23 },
-    { id: '5', name: 'ipsum', age: 43 },
-    { id: '6', name: 'harry', age: 32 },
-]
-
 const BookType = new GraphQLObjectType({
     name: 'Book',
     fields: () => ({
@@ -25,8 +11,9 @@ const BookType = new GraphQLObjectType({
         genre: { type: GraphQLString },
         author: {
             type: AuthorType,
-            resolve: (parent, args) => {
-                return authors.find(author => author.id === parent.authorId);
+            resolve: async (parent, args) => {
+                const author = await Author.findOne({ id: args.id });
+                return author;
             }
         }
     }),
@@ -40,8 +27,9 @@ const AuthorType = new GraphQLObjectType({
         age: { type: GraphQLInt },
         books: {
             type: new GraphQLList(BookType), // new list of books
-            resolve: (parent, args) => {
-                return books.filter(book => book.authorId === parent.id)
+            resolve: async (parent, args) => {
+                const books = await Book.find({ authorId: parent.id })
+                return books;
             }
         }
     })
@@ -52,25 +40,33 @@ const RootQuery = new GraphQLObjectType({
     fields: {
         book: {
             type: BookType,
-            args: { id: { type: GraphQLID } },  // id will be string as usual, no mattered if entered as an int or string
-            resolve: (parent, args) => {
-                return books.find(el => el.id === args.id);
+            args: { id: { type: GraphQLID } },  // id will be string as usual, does not matter if entered as an int or string
+            resolve: async (parent, args) => {
+                const book = await Book.findById(args.id);
+                return book;
             }
         },
         author: {
             type: AuthorType,
             args: { id: { type: GraphQLID } },
-            resolve: (parent, args) => {
-                return authors.find(el => el.id === args.id);
+            resolve: async (parent, args) => {
+                const author = await Author.findById(args.id);
+                return author;
             }
         },
         books: {
             type: new GraphQLList(BookType),
-            resolve: (parent, args) => books
+            resolve: async (parent, args) => {
+                const books = await Book.find();
+                return books;
+            }
         },
         authors: {
             type: new GraphQLList(AuthorType),
-            resolve: (parent, args) => authors
+            resolve: async (parent, args) => {
+                const authors = await Author.find();
+                return authors;
+            }
         },
     }
 })
