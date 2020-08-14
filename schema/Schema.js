@@ -2,15 +2,15 @@ const graphql = require('graphql');
 const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt } = graphql;
 
 const books = [
-    { id: '1', title: 'lorem', genre: 'oka' },
-    { id: '2', title: 'ipsum', genre: 'not' },
-    { id: '3', title: 'harry', genre: 'react' },
+    { id: '1', title: 'lorem', genre: 'oka', authorId: '4' },
+    { id: '2', title: 'ipsum', genre: 'not', authorId: '5' },
+    { id: '3', title: 'harry', genre: 'react', authorId: '6' },
 ]
 
 const authors = [
-    { id: '1', name: 'lorem', age: 23 },
-    { id: '2', name: 'ipsum', age: 43 },
-    { id: '3', name: 'harry', age: 32 },
+    { id: '4', name: 'lorem', age: 23 },
+    { id: '5', name: 'ipsum', age: 43 },
+    { id: '6', name: 'harry', age: 32 },
 ]
 
 const BookType = new GraphQLObjectType({
@@ -19,7 +19,13 @@ const BookType = new GraphQLObjectType({
         id: { type: GraphQLID },
         title: { type: GraphQLString },
         genre: { type: GraphQLString },
-    })
+        author: {
+            type: AuthorType,
+            resolve: (parent, args) => {
+                return authors.find(author => author.id === parent.authorId);
+            }
+        }
+    }),
 })
 
 const AuthorType = new GraphQLObjectType({
