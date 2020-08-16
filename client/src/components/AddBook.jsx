@@ -1,6 +1,6 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Query } from 'react-apollo'
+import { Query, useMutation } from 'react-apollo'
 import Preloader from './Preloader'
 import { fetchAuthorsQuery } from '../queries/authors'
 import { addBookMutation, fetchBooksQuery } from '../queries/books'
@@ -9,12 +9,29 @@ const AddBook = (props) => {
 
     const { errors, handleSubmit, register } = useForm();
 
+    const [addBook, { data, loading }] = useMutation(addBookMutation);
+
+    const onAdd = ({ title, genre, author }) => {
+        addBook({
+            variables: {
+                title,
+                genre,
+                authorId: author
+            },
+            refetchQueries: [{
+                query: fetchBooksQuery
+            }]
+        });
+    }
+
+    if (loading) {
+        return <Preloader />
+    }
+
     return (
         <div>
             <div>Add Book</div>
-            <form className='text-black' onSubmit={handleSubmit(formData => {
-                console.log(formData);
-            })}>
+            <form className='text-black' onSubmit={handleSubmit(onAdd)}>
                 <div>
                     <input type="text" name='title' placeholder='Title' ref={register({
                         required: 'Required!'

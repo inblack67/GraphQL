@@ -9,12 +9,14 @@ export const fetchBooksQuery = gql`
     }
 }`;
 
+// ! = not null gql type
 export const addBookMutation = gql`
-mutation{
-    addBook(name: "", genre: "", authorId: ""){
+mutation($title: String!, $genre: String!, $authorId: ID!){
+    addBook(title: $title, genre: $genre, authorId: $authorId){
         title,
         genre,
         id
     }
 }`;
+
 
