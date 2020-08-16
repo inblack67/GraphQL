@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost'
+import gql from 'graphql-tag'
 
 export const fetchBooksQuery = gql`
 {
@@ -7,5 +7,14 @@ export const fetchBooksQuery = gql`
         genre,
         id
     }
-}
-`
+}`;
+
+export const addBookMutation = gql`
+mutation{
+    addBook(name: "", genre: "", authorId: ""){
+        title,
+        genre,
+        id
+    }
+}`;
+

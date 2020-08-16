@@ -1,26 +1,31 @@
 import React from 'react'
 import Preloader from './Preloader'
-import { graphql } from 'react-apollo'
+import { Query } from 'react-apollo'
 import { fetchBooksQuery } from '../queries/books'
 
-const Books = (props) => {
-
-    const { books, loading } = props.data;
-
-    if (loading) {
-        return <Preloader />
-    }
+const Books = () => {
 
     return (
-        <div>
-            <ul>
-                <h1>Books</h1>
-                {books && books.map(book => <li key={book.id}>
-                    {book.title}
-                </li>)}
-            </ul>
+        <div className='text-black'>
+            <h1>Books</h1>
+            <Query query={fetchBooksQuery}>
+                {
+                    ({loading, error, data}) => {
+                        if (loading) {
+                            return <Preloader />
+                        }
+                        if (error) {
+                            console.error(error)
+                            return;
+                        }
+                        return data.books.map(book => <div key={book.id}>
+                            {book.title}
+                        </div>)
+                    }
+                }
+            </Query>
         </div>
     )
 }
 
-export default graphql(fetchBooksQuery)(Books);
+export default Books;

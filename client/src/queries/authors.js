@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost'
+import gql from 'graphql-tag'
 
 export const fetchAuthorsQuery = gql`
 {
@@ -7,5 +7,4 @@ export const fetchAuthorsQuery = gql`
         age,
         id
     }
-}
-`
+}`;

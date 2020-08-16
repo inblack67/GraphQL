@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import BookState from './context/book/BookState'
 import Home from './components/Home';
 
 
@@ -14,15 +13,13 @@ function App() {
   }, [])
 
   return (
-    <BookState>
-      <div className="">
-        <Router>
-          <Switch>
-            <Route path='/' component={Home} />
-          </Switch>
-        </Router>
-      </div>
-    </BookState>
+    <div className="">
+      <Router>
+        <Switch>
+          <Route path='/' component={Home} />
+        </Switch>
+      </Router>
+    </div>
   );
 }
 
