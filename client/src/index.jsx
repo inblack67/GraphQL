@@ -4,7 +4,6 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo'
-import './css/main.css';
 
 const graphqlClient = new ApolloClient({
   uri: '/graphql'
